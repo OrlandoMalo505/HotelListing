@@ -9,8 +9,13 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCors(cors =>
+{
+    cors.AddPolicy("CorsPolicy", d=> d.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+});
 
 builder.Host.UseSerilog();
+
 Log.Logger = new LoggerConfiguration()
     .WriteTo.File(
     path: "C:\\HotelListing\\logs\\log-.txt",
@@ -19,28 +24,19 @@ Log.Logger = new LoggerConfiguration()
     restrictedToMinimumLevel: LogEventLevel.Information)
     .CreateLogger();
 
-try
-{
-    Log.Information("App is starting1111111!");
-}
-catch (Exception ex)
-{
-    Log.Fatal(ex, "App failed to start!");
-}
-finally
-{
-    Log.CloseAndFlush();
-}
-
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
+   
 }
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.UseCors("CorsPolicy");
 
 app.UseHttpsRedirection();
 
