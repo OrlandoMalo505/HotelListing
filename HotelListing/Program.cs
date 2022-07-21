@@ -1,3 +1,4 @@
+using HotelListing;
 using HotelListing.Configurations;
 using HotelListing.Data;
 using HotelListing.IRepository;
@@ -20,6 +21,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(MapperInitializer));
 var connectionString = builder.Configuration.GetConnectionString("SqlConnection");
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(connectionString));
+
+builder.Services.AddAuthentication();
+builder.Services.ConfigureIdentity();
 
 builder.Services.AddCors(cors =>
 {
