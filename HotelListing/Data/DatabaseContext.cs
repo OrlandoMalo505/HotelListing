@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using HotelListing.Configurations.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelListing.Data
@@ -17,51 +18,12 @@ namespace HotelListing.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Country>().HasData(
-                new Country
-                {
-                    CountryId = 1,
-                    Name = "Albania",
-                    ShortName = "AL"
-                },
-                new Country
-                {
-                    CountryId = 2,
-                    Name = "Kosovo",
-                    ShortName = "KS"
-                },
-                new Country
-                {
-                    CountryId = 3,
-                    Name = "North Macedonia",
-                    ShortName = "MKD"
-                });
+            modelBuilder.ApplyConfiguration(new CountryConfiguration());
+            modelBuilder.ApplyConfiguration(new HotelConfiguration());
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
 
-            modelBuilder.Entity<Hotel>().HasData(
-                new Hotel
-                {
-                    HotelId = 1,
-                    Name = "Hilton",
-                    Address = "Tirana",
-                    Rating = 4.5,
-                    CountryId = 1
-                },
-                new Hotel
-                {
-                    HotelId = 2,
-                    Name = "Diamond",
-                    Address = "Prishtina",
-                    Rating = 4.5,
-                    CountryId = 2
-                },
-                new Hotel
-                {
-                    HotelId = 3,
-                    Name = "Marriott",
-                    Address = "Skopje",
-                    Rating = 4.5,
-                    CountryId = 3
-                });
+
+
 
         }
 

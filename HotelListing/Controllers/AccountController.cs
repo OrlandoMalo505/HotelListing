@@ -44,6 +44,8 @@ namespace HotelListing.Controllers
                     }
                     return BadRequest(ModelState);
                 }
+                await _userManager.AddToRolesAsync(user, userDTO.Roles);
+                return Accepted();
             }
             catch (Exception ex)
             {
@@ -51,7 +53,7 @@ namespace HotelListing.Controllers
                 return Problem($"Something went wrongin the {nameof(Register)}", statusCode: 500);
             }
 
-            return Accepted();
+            
         }
 
         
