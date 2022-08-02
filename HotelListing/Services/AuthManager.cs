@@ -60,8 +60,8 @@ namespace HotelListing.Services
 
         private SigningCredentials GetSigningCredentials()
         {
-            var key = Environment.GetEnvironmentVariable("KEY");
-            var secret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+            var key = Environment.GetEnvironmentVariable("KEYY");
+            var secret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(s: key));
 
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
         }
