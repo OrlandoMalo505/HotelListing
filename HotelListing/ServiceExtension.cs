@@ -22,6 +22,7 @@ namespace HotelListing
             var key = Environment.GetEnvironmentVariable("KEYY");          
             service.AddAuthentication(opt =>
             {
+                opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;    
 
