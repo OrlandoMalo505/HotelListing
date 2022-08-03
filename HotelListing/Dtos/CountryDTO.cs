@@ -21,4 +21,9 @@ namespace HotelListing.Dtos
 
     }
 
+    public class UpdateCountryDTO : CreateCountryDTO
+    {
+
+    }
+
 }

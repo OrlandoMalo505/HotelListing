@@ -28,4 +28,9 @@ namespace HotelListing.Dtos
 
     }
 
+    public class UpdateHotelDTO : CreateHotelDTO
+    {
+
+    }
+
 }
