@@ -25,8 +25,7 @@ namespace HotelListing.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]      
         public async Task<IActionResult> GetAllHotels()
         {
             try
@@ -42,8 +41,7 @@ namespace HotelListing.Controllers
             }
              
         }
-
-        [Authorize]
+ 
         [HttpGet("{id:int}", Name = "GetHotel")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -92,6 +90,7 @@ namespace HotelListing.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -126,6 +125,7 @@ namespace HotelListing.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

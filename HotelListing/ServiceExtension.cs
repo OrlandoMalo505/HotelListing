@@ -19,7 +19,8 @@ namespace HotelListing
         public static void ConfigureJwt(this IServiceCollection service, IConfiguration configuration)
         {
             var jwtSettings = configuration.GetSection("Jwt");
-            var key = Environment.GetEnvironmentVariable("KEYY");          
+            var key = Environment.GetEnvironmentVariable("KEYY");
+            var myAudience = "http://myaudience.com";
             service.AddAuthentication(opt =>
             {
                 opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -35,9 +36,8 @@ namespace HotelListing
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = jwtSettings.GetSection("Issuer").Value,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
-                        
-
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
+                        ValidateAudience = false
                     };
                 });
         }
