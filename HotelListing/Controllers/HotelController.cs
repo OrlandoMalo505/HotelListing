@@ -28,17 +28,9 @@ namespace HotelListing.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]      
         public async Task<IActionResult> GetAllHotels([FromQuery] RequestParams requestParams)
         {
-            try
-            {
                 var hotels = await _unitOfWork.Hotels.GetAllPaged(requestParams, null);
                 var result = _mapper.Map<IList<HotelDTO>>(hotels);
                 return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Something went wrong in {nameof(GetAllHotels)}");
-                return StatusCode(500, "Internal server error. Please try again later.");
-            }
              
         }
  
@@ -47,18 +39,9 @@ namespace HotelListing.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetHotel(int id)
         {
-            try
-            {
                 var hotel = await _unitOfWork.Hotels.Get(h=> h.HotelId == id, new List<string> { "Country"});
                 var result = _mapper.Map<HotelDTO>(hotel);
                 return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Something went wrong in {nameof(GetHotel)}");
-                return StatusCode(500, "Internal server error. Please try again later.");
-
-            }
         }
 
         [Authorize(Roles = "Admin")]
@@ -74,20 +57,11 @@ namespace HotelListing.Controllers
                 return BadRequest(ModelState);    
             }
 
-            try 
-            {
                 var hotel = _mapper.Map<Hotel>(createHotelDTO);
                 await _unitOfWork.Hotels.Insert(hotel);
                 await _unitOfWork.Save();
 
                 return CreatedAtRoute(nameof(GetHotel), new {id = hotel.HotelId}, hotel);
-            }
-            catch (Exception ex)
-            {
-
-                _logger.LogError(ex, $"Something went wrong in {nameof(CreateHotel)}");
-                return StatusCode(500, "Internal server error. Please try again later.");
-            }
         }
 
         [Authorize]
@@ -103,8 +77,6 @@ namespace HotelListing.Controllers
                 return BadRequest(ModelState);
             }
 
-            try
-            {
                 var hotel = await _unitOfWork.Hotels.Get(h => h.HotelId == id);
                 if(hotel is null)
                 {
@@ -117,12 +89,6 @@ namespace HotelListing.Controllers
                 await _unitOfWork.Save();
 
                 return NoContent();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Something went wrong in {nameof(UpdateHotel)}");
-                return StatusCode(500, "Internal server error. Please try again later.");
-            }
         }
 
         [Authorize(Roles = "Admin")]
@@ -138,9 +104,6 @@ namespace HotelListing.Controllers
                 _logger.LogError($"Invalid DELETE attempt in {nameof(DeleteHotel)}");
                 return BadRequest();
             }
-
-            try
-            {
                 var hotel = await _unitOfWork.Hotels.Get(h => h.HotelId == id);
                 if(hotel == null)
                 {
@@ -152,12 +115,7 @@ namespace HotelListing.Controllers
                 await _unitOfWork.Save();
 
                 return NoContent();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Something went wrong in {nameof(DeleteHotel)}");
-                return StatusCode(500, "Internal server error. Please try again later.");
-            }
+
         }
 
     }
