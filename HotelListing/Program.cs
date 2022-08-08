@@ -45,6 +45,8 @@ Log.Logger = new LoggerConfiguration()
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IAuthManager, AuthManager>();
 
+builder.Services.ConfigureVersioning();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
