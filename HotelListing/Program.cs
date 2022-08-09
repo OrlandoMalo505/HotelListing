@@ -7,13 +7,20 @@ using HotelListing.Services;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
+using Microsoft.AspNetCore.Mvc;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers().AddNewtonsoftJson(options => 
+builder.Services.AddControllers(config =>
+{
+    config.CacheProfiles.Add("120SecondDuration", new CacheProfile
+    {
+        Duration = 120
+    });
+}).AddNewtonsoftJson(options => 
 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -23,6 +30,8 @@ builder.Services.AddAutoMapper(typeof(MapperInitializer));
 var connectionString = builder.Configuration.GetConnectionString("SqlConnection");
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(connectionString));
 
+builder.Services.AddResponseCaching();
+builder.Services.ConfigureHttpCacheHeaders();
 builder.Services.AddAuthentication();
 builder.Services.ConfigureIdentity();
 builder.Services.ConfigureJwt(builder.Configuration);
@@ -64,6 +73,8 @@ app.UseHttpsRedirection();
 
 app.UseCors("CorsPolicy");
 
+app.UseResponseCaching();
+app.UseHttpCacheHeaders();
 app.UseAuthentication();
 
 app.UseAuthorization();
