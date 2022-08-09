@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
 using Microsoft.AspNetCore.Mvc;
-
+using AspNetCoreRateLimit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +35,10 @@ builder.Services.ConfigureHttpCacheHeaders();
 builder.Services.AddAuthentication();
 builder.Services.ConfigureIdentity();
 builder.Services.ConfigureJwt(builder.Configuration);
+builder.Services.AddMemoryCache();
+builder.Services.ConfigureRateLimiting();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
 
 builder.Services.AddCors(cors =>
 {
@@ -75,6 +79,7 @@ app.UseCors("CorsPolicy");
 
 app.UseResponseCaching();
 app.UseHttpCacheHeaders();
+app.UseIpRateLimiting();
 app.UseAuthentication();
 
 app.UseAuthorization();
